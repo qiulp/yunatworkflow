@@ -1,4 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<context:annotation-config />
+	<!-- <context:component-scan base-package="com.yunat.workflow.web" /> -->
+	<!-- 用于引用变量(自定义 系统变量等) -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<value>classpath:dbpool.properties</value>
+		</property>
+		<property name="systemPropertiesMode">
+			<value>1</value>
+		</property>
+		<property name="searchSystemEnvironment">
+			<value>true</value>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<!-- Spring bean configuration. Tell Spring to bounce off BoneCP -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+		<property name="targetDataSource">
+			<ref local="mainDataSource" />
+		</property>
+	</bean>
+
+	<bean id="mainDataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<!-- 数据库驱动 -->
+		<property name="driverClass" value="${aliLibrary.db.driverClass}" />
+		<!-- 数据库url -->
+		<property name="jdbcUrl" value="${aliLibrary.db.jdbcUrl}" />
+		<!-- 用户名 -->
+		<property name="username" value="${aliLibrary.db.username}" />
+		<!-- 密码 -->
+		<property name="password" value="${aliLibrary.db.password}" />
+		<!-- 检查数据库连接池中的空闲连接间隔时间 unit:minute 默认值：240，如果要取消则设置为0 -->
+		<property name="idleConnectionTestPeriod" value="${aliLibrary.db.idleConnectionTestPeriod}" />
+		<!-- 连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0 -->
+		<property name="idleMaxAge" value="${aliLibrary.db.idleMaxAge}" />
+		<!-- 每个分区最大的连接数 -->
+		<property name="maxConnectionsPerPartition" value="${aliLibrary.db.maxConnectionsPerPartition}" />
+		<!-- 每个分区最小的连接数 -->
+		<property name="minConnectionsPerPartition" value="${aliLibrary.db.minConnectionsPerPartition}" />
+		<!-- 分区数 ，默认值2，最小1，推荐3-4，视应用而定 -->
+		<property name="partitionCount" value="${aliLibrary.db.partitionCount}" />
+		<!-- 每次去拿数据库连接的时候一次性要拿几个,默认值：2 -->
+		<property name="acquireIncrement" value="${aliLibrary.db.acquireIncrement}" />
+		<!-- 缓存prepared statements的大小，默认值：0 -->
+		<property name="statementsCacheSize" value="${aliLibrary.db.statementsCacheSize}" />
+		<!-- 每个分区释放链接助理进程的数量，默认值：3，除非你的一个数据库连接的时间内做了很多工作，不然过多的助理进程会影响你的性能 -->
+		<property name="releaseHelperThreads" value="${aliLibrary.db.releaseHelperThreads}" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>
+		<property name="configurationClass">
+			<value>org.hibernate.cfg.AnnotationConfiguration</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
+				<prop key="hibernate.show_sql">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<tx:annotation-driven />
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
