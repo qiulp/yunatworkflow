@@ -1,5 +1,11 @@
-package com.yunat.workflow.web.domain;
+package com.yunat.workflow.login.domain;
 
+/**
+ * 用户登陆信息
+ * 
+ * @author chenyi8888
+ * 
+ */
 public class LoginForm {
 	private String username;
 	private String password;

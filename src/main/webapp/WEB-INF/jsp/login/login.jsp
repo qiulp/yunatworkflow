@@ -8,8 +8,9 @@
 </head>
 <body>
 	<div>
-		<form action="login.do" methed="get">
-			<input type="text" name="username"> <input type="submit"
+		<form action="login.do" method="post">
+			<label>用户名：</label><input type="text" name="username"><label>密码：</label>
+			<input type="password" name="passwd"> <input type="submit"
 				value="SUBMIT">
 		</form>
 	</div>
