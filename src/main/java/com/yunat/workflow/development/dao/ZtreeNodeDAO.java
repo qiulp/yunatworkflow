@@ -2,7 +2,6 @@ package com.yunat.workflow.development.dao;
 
 import java.util.List;
 
-import com.yunat.workflow.development.domain.Ztree;
 import com.yunat.workflow.development.pojo.ZtreeNode;
 
 /**

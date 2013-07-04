@@ -8,7 +8,7 @@ $(function(){
 		    $(domEle).css("display","none");	
 		});
 		$("#"+$(this).attr("name")+"Div").css("display","block");
-		
+
 	});
 	$("span[id^='_span']").click(function(){
 		$("#scripts").val($(this).attr("name"));	

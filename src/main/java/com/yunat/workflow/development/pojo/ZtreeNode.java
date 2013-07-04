@@ -2,6 +2,7 @@ package com.yunat.workflow.development.pojo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -42,7 +43,6 @@ public class ZtreeNode {
 	
 	@Column(name = "group_id")
 	private String group_id = null;
-
 
 	public String getId() {
 		return id;

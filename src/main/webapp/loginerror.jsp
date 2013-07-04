@@ -4,16 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>hadoop任务调度</title>
+<title>登陆错误</title>
 </head>
-<body>
-	<div>
-		<form action="login.do" method="post">
-			<label>用户名：</label><input type="text" name="username"><label>密码：</label>
-			<input type="password" name="password"> <input type="submit"
-				value="登陆">
-		</form>
-	</div>
-
+<body>${ermessager}
 </body>
 </html>
