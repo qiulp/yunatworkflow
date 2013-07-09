@@ -24,4 +24,14 @@ public interface AttachmentDAO {
 	 */
 	public List<Attachment> queryAttachmentByTaskId(String task_id);
 	
+	/**
+	 * <p>插入新附件信息</p>
+	 * 
+	 * @param attachment
+	 * @return: void
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 5, 2013 4:55:40 PM
+	 */
+	public void insertAttachment(Attachment attachment);
+	
 }

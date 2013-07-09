@@ -19,9 +19,6 @@ $(function(){
 		      }  
 			});
 	});
-	$("#clear").click(function(){
-		$("#logs").val("");
-	});
 	$("#run").click(function(){
 		if($.trim($("#scripts").val())==""){
 			jAlert("无运行的脚本！","友情提示");
@@ -35,10 +32,10 @@ $(function(){
 		var timestamp=(new Date()).valueOf();
 		if ('WebSocket' in window)
 			ws = new WebSocket(
-					"ws://localhost:8080/yunatworkflow/mywebsocket"+timestamp+".socket");
+					"ws://10.200.190.191:8080/yunatworkflow/mywebsocket"+timestamp+".socket");
 		else if ('MozWebSocket' in window)
 			ws = new MozWebSocket(
-					"ws://localhost:8080/yunatworkflow/mywebsocket"+timestamp+".socket");
+					"ws://10.200.190.191:8080/yunatworkflow/mywebsocket"+timestamp+".socket");
 		else
 			alert("not support");
 		ws.onmessage = function(evt) {

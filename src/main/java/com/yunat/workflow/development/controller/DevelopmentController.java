@@ -9,12 +9,18 @@
  */
 package com.yunat.workflow.development.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yunat.workflow.development.domain.AttachmentDomain;
@@ -206,6 +212,40 @@ public class DevelopmentController {
 	@ResponseBody
 	@RequestMapping(value = "queryattachment.do")
 	public List<AttachmentDomain> queryAttachmentList(AttachmentDomain ad){
+		System.out.println(ad.getTask_id());
 		return developmentService.queryAttachmentByTaskId(ad.getTask_id());
 	}
+	
+	/**
+	 * <p>上传附件</p>
+	 * 
+	 * @param name
+	 * @param file
+	 * @return
+	 * @return: String
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @throws FileNotFoundException 
+	 * @date: Created on Jul 5, 2013 2:12:36 PM
+	 */
+	@RequestMapping(value = "uploadfile.do", method = RequestMethod.POST)  
+    public String handleFormUpload(AttachmentDomain ad,@RequestParam("file") MultipartFile file) throws Exception { 
+        //MultipartFile是对当前上传的文件的封装，当要同时上传多个文件时，可以给定多个MultipartFile参数  
+		/* 获取上传的文件名称 */
+		String fileNameLong = file.getOriginalFilename();
+		/* 获取文件扩展名 */
+//		String extensionName = fileNameLong.substring(fileNameLong.lastIndexOf(".") + 1);
+		File fileDir = new File("/tmp/" +ad.getTask_id()+"/");
+		if (!fileDir.exists()) {
+		   fileDir.mkdirs();
+		}
+		if (!file.isEmpty()) {
+			FileOutputStream out;
+			out = new FileOutputStream("/tmp/" +ad.getTask_id()+"/" +fileNameLong);
+			out.write(file.getBytes()); // 写入文件
+			out.close();
+		}
+		ad.setFile_name(fileNameLong);
+		developmentService.insertAttachment(ad);
+		return "/development/upload";
+    }  
 }

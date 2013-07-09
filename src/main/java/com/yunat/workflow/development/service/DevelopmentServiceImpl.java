@@ -193,6 +193,24 @@ public class DevelopmentServiceImpl implements DevelopmentService {
 			ad.setDescription(ap.getDescription());
 			attachmentDomain.add(ad);
 		}
+		System.out.println(attachmentDomain.size());
 		return attachmentDomain;
+	}
+
+	/**
+	 * <p>上传新附件保存附件信息</p>
+	 * 
+	 * @see com.yunat.workflow.development.service.DevelopmentService#insertAttachment(com.yunat.workflow.development.domain.AttachmentDomain)
+	 * @author: 邱路平 - luping.qiu@huaat.com 
+	 * @date: Created on Jul 5, 2013 4:58:16 PM
+	 */
+	@Transactional
+	public void insertAttachment(AttachmentDomain attachmentDomain) {
+		Attachment ap =new Attachment();
+		ap.setFid(UUID.randomUUID().toString().replace("-", ""));
+		ap.setTask_id(attachmentDomain.getTask_id());
+		ap.setFile_name(attachmentDomain.getFile_name());
+		ap.setDescription(attachmentDomain.getDescription());
+		attachmentDAO.insertAttachment(ap);
 	}
 }

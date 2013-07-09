@@ -44,5 +44,16 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 		List<Attachment> list= query.list();
 		return list;
 	}
+	/**
+	 * <p>插入新附件信息</p>
+	 * 
+	 * @see com.yunat.workflow.development.dao.AttachmentDAO#insertAttachment(com.yunat.workflow.development.pojo.Attachment)
+	 * @author: 邱路平 - luping.qiu@huaat.com 
+	 * @date: Created on Jul 5, 2013 4:56:18 PM
+	 */
+	public void insertAttachment(Attachment attachment) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(attachment);
+	}
 
 }
