@@ -20,6 +20,7 @@ import org.apache.catalina.websocket.MessageInbound;
 import org.apache.catalina.websocket.WsOutbound;
 
 import com.yunat.workflow.common.FileUtils;
+import com.yunat.workflow.common.WorkflowProperties;
 
 
 /**
@@ -71,13 +72,10 @@ public class MyMessageInbound extends MessageInbound {
 	protected void onTextMessage(CharBuffer msg) throws IOException {
 		MessageInbound messageInbound =InitServlet.getSocketList().get(this.ssid);
 		WsOutbound outbound = messageInbound.getWsOutbound();
-		String path ="/tmp/";
+		String path = WorkflowProperties.getInstance().getValue("sqlpath");
 		String type = msg.toString().split(":")[0];
 		String content=msg.toString().split(":")[1];
 		String filePath = FileUtils.writerText(path, this.ssid+".sql",content, false);
-		System.out.println(type);
-		System.out.println(content);
-		System.out.println(filePath);
 		String cmd = null;
 		if(type.equals("hive")){
 			cmd = "hive -f "+filePath;

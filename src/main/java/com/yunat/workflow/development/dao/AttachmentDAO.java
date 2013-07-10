@@ -34,4 +34,14 @@ public interface AttachmentDAO {
 	 */
 	public void insertAttachment(Attachment attachment);
 	
+	/**
+	 * <p>删除附件</p>
+	 * 
+	 * @param attachment
+	 * @return: void
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 9, 2013 6:01:35 PM
+	 */
+	public void deleteAttachment(Attachment attachment);
+	
 }

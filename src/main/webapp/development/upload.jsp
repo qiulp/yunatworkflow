@@ -42,6 +42,10 @@ $(function(){
 		});
 	});
 	$("#uploadbutton").click(function(){
+		if($("#file").val() == ""){
+			alert("请先选择附件！");
+			return false;
+		}
 		$("#uploadfile").submit();
 		setTimeout(function(){
 			$.ajax({
@@ -53,7 +57,7 @@ $(function(){
 			  success: function(data){
 				  html ="<table><tr><th>文件名称</th><th>文件描述</th><th>操作</th></tr>";
 				  for (var i=0;i<data.length;i++){
-					  html += "<tr><td>"+data[i].file_name+"</td><td>"+data[i].description+"</td><td><a href='#'>删除</a></td></tr>";
+					  html += "<tr><td>"+data[i].file_name+"</td><td>"+data[i].description+"</td><td><a href='#' class='del' name='"+data[i].file_name+"' id='"+data[i].fid+"'>删除</a></td></tr>";
 				  }
 				  html+="</table>";
 				  $("#attachmentlist").html(html);
@@ -63,6 +67,25 @@ $(function(){
 		        alert("error");
 		      }  
 			});},1000);
+	});
+	$(".del").live('click',function(){
+		var flag= false;
+		$.ajax({
+			  url: "deleteattachment.do",
+			  type: "POST",
+			  data:({"task_id":$("#task_id").val(),"fid":$(this).attr("id"),"file_name":$(this).attr("name")}),
+			  async:false,
+			  success: function(){
+				  flag = true;
+			  },
+			  error : function(data) {  
+		        alert("error");
+		      }  
+		});
+		if(flag){
+			 $(this).closest("tr").remove();
+			 alert("删除成功22！");
+		}
 	});
 })
 $(document).ready(function(){
@@ -75,7 +98,7 @@ $(document).ready(function(){
 	  success: function(data){
 		  html ="<table><tr><th>文件名称</th><th>文件描述</th><th>操作</th></tr>";
 		  for (var i=0;i<data.length;i++){
-			  html += "<tr><td>"+data[i].file_name+"</td><td>"+data[i].description+"</td><td><a href='#'>删除</a></td></tr>";
+			  html += "<tr><td>"+data[i].file_name+"</td><td>"+data[i].description+"</td><td><a href='#' class='del' name='"+data[i].file_name+"' id='"+data[i].fid+"'>删除</a></td></tr>";
 		  }
 		  html+="</table>";
 		  $("#attachmentlist").html(html);
@@ -93,7 +116,7 @@ $(document).ready(function(){
 </div>
 <div style="margin-top:20px;margin-left:10px">
 	<form id="uploadfile" method="post" action="uploadfile.do" enctype="multipart/form-data" target="hidden_frame"> 
-	    选择文件：<input type="file" name="file"/>
+	    选择文件：<input type="file" name="file" id="file"/>
 	    文件说明：<input type="text" name="description" id="description"/> 
 	    <input type="hidden" id="task_id" name="task_id" value="${ztree.taskId}">
 	    <input type="hidden" id="name" name="task_name" value="${ztree.name}">
@@ -105,38 +128,6 @@ $(document).ready(function(){
 <span style="font-family:Verdana; font-size:13px;">附件列表：</span>
 </div>
 <div style="margin-top:5px" id ="attachmentlist">
-	<table>  
-	<tr>  
-	  <th>a</th>  
-	  <th>b</th>  
-	  <th>c</th>  
-	  <th>d</th>  
-	</tr>  
-	<tr>  
-	  <td>a</td>  
-	  <td>a</td>  
-	  <td>a</td>  
-	  <td>a</td>  
-	</tr>  
-	<tr>  
-	  <td>b</td>  
-	  <td>b</td>  
-	  <td>b</td>  
-	  <td>b</td>  
-	</tr>  
-	<tr>  
-	  <td>c</td>  
-	  <td>c</td>  
-	  <td>c</td>  
-	  <td>c</td>  
-	</tr>  
-	<tr>  
-	  <td>d</td>  
-	  <td>d</td>  
-	  <td>d</td>  
-	  <td>d</td>  
-	</tr>  
-</table> 
 </div>
 </div>
 

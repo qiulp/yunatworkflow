@@ -56,4 +56,18 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 		session.save(attachment);
 	}
 
+	/**
+	 * <p>删除附件</p>
+	 * 
+	 * @param attachment
+	 * @return: void
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 9, 2013 6:01:35 PM
+	 */
+	public void deleteAttachment(Attachment attachment){
+		Session session = sessionFactory.getCurrentSession();
+		Query delete = session.createQuery("delete from Attachment t where t.fid=:fid");
+		delete.setParameter("fid", attachment.getFid());
+		delete.executeUpdate();
+	}
 }

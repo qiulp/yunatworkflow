@@ -213,4 +213,18 @@ public class DevelopmentServiceImpl implements DevelopmentService {
 		ap.setDescription(attachmentDomain.getDescription());
 		attachmentDAO.insertAttachment(ap);
 	}
+
+	/**
+	 * <p>[描述方法实现的功能]</p>
+	 * 
+	 * @see com.yunat.workflow.development.service.DevelopmentService#deleteAttachment(com.yunat.workflow.development.domain.AttachmentDomain)
+	 * @author: 邱路平 - luping.qiu@huaat.com 
+	 * @date: Created on Jul 9, 2013 6:13:05 PM
+	 */
+	@Override
+	public void deleteAttachment(AttachmentDomain attachmentDomain) {
+		Attachment ap =new Attachment();
+		ap.setFid(attachmentDomain.getFid());
+		attachmentDAO.deleteAttachment(ap);
+	}
 }

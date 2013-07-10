@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.yunat.workflow.common.WorkflowProperties;
 import com.yunat.workflow.development.domain.AttachmentDomain;
 import com.yunat.workflow.development.domain.Ztree;
 import com.yunat.workflow.development.service.DevelopmentService;
@@ -233,19 +234,39 @@ public class DevelopmentController {
 		/* 获取上传的文件名称 */
 		String fileNameLong = file.getOriginalFilename();
 		/* 获取文件扩展名 */
-//		String extensionName = fileNameLong.substring(fileNameLong.lastIndexOf(".") + 1);
-		File fileDir = new File("/tmp/" +ad.getTask_id()+"/");
+		//String extensionName = fileNameLong.substring(fileNameLong.lastIndexOf(".") + 1);
+		String attachmentPath = WorkflowProperties.getInstance().getValue("attachmentpath");
+		File fileDir = new File(attachmentPath +ad.getTask_id()+"/");
 		if (!fileDir.exists()) {
 		   fileDir.mkdirs();
 		}
 		if (!file.isEmpty()) {
 			FileOutputStream out;
-			out = new FileOutputStream("/tmp/" +ad.getTask_id()+"/" +fileNameLong);
+			out = new FileOutputStream(attachmentPath +ad.getTask_id()+"/" +fileNameLong);
 			out.write(file.getBytes()); // 写入文件
 			out.close();
 		}
 		ad.setFile_name(fileNameLong);
 		developmentService.insertAttachment(ad);
 		return "/development/upload";
-    }  
+    } 
+	
+	/**
+	 * <p>删除附件</p>
+	 * 
+	 * @param ad
+	 * @return: void
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 9, 2013 6:14:47 PM
+	 */
+	@ResponseBody
+	@RequestMapping(value = "deleteattachment.do")
+	public void deleteAttachment(AttachmentDomain ad){
+		String attachmentPath = WorkflowProperties.getInstance().getValue("attachmentpath");
+		File file = new File(attachmentPath +ad.getTask_id()+"/"+ad.getFile_name());
+		if(file.exists()){
+			file.delete();
+		}
+		developmentService.deleteAttachment(ad);
+	}
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.yunat.workflow.development.domain.AttachmentDomain;
 import com.yunat.workflow.development.domain.Ztree;
+import com.yunat.workflow.development.pojo.Attachment;
 
 /**
  * <p>开发中心相关业务接口</p>
@@ -104,4 +105,14 @@ public interface DevelopmentService {
 	 * @date: Created on Jul 5, 2013 4:55:40 PM
 	 */
 	public void insertAttachment(AttachmentDomain attachmentDomain);
+	
+	/**
+	 * <p>删除附件</p>
+	 * 
+	 * @param attachment
+	 * @return: void
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 9, 2013 6:01:35 PM
+	 */
+	public void deleteAttachment(AttachmentDomain attachmentDomain);
 }
