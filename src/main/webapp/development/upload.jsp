@@ -47,6 +47,8 @@ $(function(){
 			return false;
 		}
 		$("#uploadfile").submit();
+		$("#file").val("");
+		$("#description").val("");
 		setTimeout(function(){
 			$.ajax({
 			  url: "queryattachment.do",
@@ -84,7 +86,7 @@ $(function(){
 		});
 		if(flag){
 			 $(this).closest("tr").remove();
-			 alert("删除成功22！");
+			 alert("删除成功！");
 		}
 	});
 })

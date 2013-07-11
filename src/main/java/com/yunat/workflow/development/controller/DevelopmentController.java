@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.yunat.workflow.common.WorkflowProperties;
 import com.yunat.workflow.development.domain.AttachmentDomain;
+import com.yunat.workflow.development.domain.RuleDomain;
 import com.yunat.workflow.development.domain.Ztree;
 import com.yunat.workflow.development.service.DevelopmentService;
 
@@ -213,7 +214,6 @@ public class DevelopmentController {
 	@ResponseBody
 	@RequestMapping(value = "queryattachment.do")
 	public List<AttachmentDomain> queryAttachmentList(AttachmentDomain ad){
-		System.out.println(ad.getTask_id());
 		return developmentService.queryAttachmentByTaskId(ad.getTask_id());
 	}
 	
@@ -268,5 +268,49 @@ public class DevelopmentController {
 			file.delete();
 		}
 		developmentService.deleteAttachment(ad);
+	}
+	
+	/**
+	 * <p>查询规则列表</p>
+	 * 
+	 * @param rd
+	 * @return
+	 * @return: List<RuleDomain>
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 10, 2013 6:27:10 PM
+	 */
+	@ResponseBody
+	@RequestMapping(value = "queryrulelist.do")
+	public List<RuleDomain> queryRuleList(RuleDomain rd){
+		return developmentService.queryRuleByTaskId(rd.getTask_id());
+	}
+	
+	/**
+	 * <p>插入新规则</p>
+	 * 
+	 * @param rd
+	 * @return: void
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 10, 2013 6:30:07 PM
+	 */
+	@ResponseBody
+	@RequestMapping(value = "addrule.do")
+	public List<RuleDomain> addRule(RuleDomain rd){
+		developmentService.insertRule(rd);
+		return developmentService.queryRuleByTaskId(rd.getTask_id());
+	}
+	
+	/**
+	 * <p>删除规则</p>
+	 * 
+	 * @param rd
+	 * @return: void
+	 * @author: 邱路平 - luping.qiu@huaat.com
+	 * @date: Created on Jul 10, 2013 6:31:15 PM
+	 */
+	@ResponseBody
+	@RequestMapping(value = "deleterule.do")
+	public void deleteRule(RuleDomain rd){
+		developmentService.deleteRule(rd);
 	}
 }
